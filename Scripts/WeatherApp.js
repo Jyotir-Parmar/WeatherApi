@@ -11,6 +11,7 @@
 
     var app = angular.module("WeatherApp", []);
 
+    //Using Template cache so no need to make ajax request for template.
     app.run(["$templateCache", function ($templateCache) {
         $templateCache.put('Views/Tabs.html', '<div class="TabContainer"><span class="Tab" ng-class="{ActiveButton: selectedTab == tab}" ng-repeat="tab in tabsData" ng-click="getWeatherReport($event, tab)">{{::tab}}</span></div>')
         $templateCache.put('Views/DisplayWeather.html', '<section><h3>{{::channelInfo.title}}</h3><div ng-bind-html="channelInfo.item.description"></div><img ng-src="{{::channelInfo.image.url}}" ng-style="imgCss" /></section>');
@@ -20,7 +21,7 @@
         $sceProvider.enabled(false);
     }]);
 
-    //Responsible to maje ajax request.
+    //Responsible to make ajax request.
     app.service("WeatherService", ["$http", function ($http) {
         this.getWeatherOfGivenCity = function (url) {
             var promise = $http({
@@ -49,7 +50,7 @@
     app.controller("WeatherController", ['$scope', 'UrlFactory', 'WeatherService', function ($scope, UrlFactory, WeatherService) {
         $scope.tabsData = ['Mumbai', 'Pune', 'Chennai', 'Bangalore'];
 
-        $scope.textMessage = "Please select the city";
+        $scope.textMessage = "";
         $scope.selectedTab = "";
         $scope.channelInfo = {};
         $scope.toggleVisibility = false;
